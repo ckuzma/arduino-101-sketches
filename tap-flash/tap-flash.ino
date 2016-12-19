@@ -1,9 +1,9 @@
 #include "CurieIMU.h"
 
 void setup() {
+  /* Set up the built-in LED */
   pinMode(LED_BUILTIN, OUTPUT);
-  Serial.begin(9600); // initialize Serial communication
-  while(!Serial) ;    // wait for serial port to connect..
+  
   /* Initialise the IMU */
   CurieIMU.begin();
   CurieIMU.attachInterrupt(eventCallback);
@@ -12,8 +12,6 @@ void setup() {
   CurieIMU.setDetectionThreshold(CURIE_IMU_SHOCK, 1500); // 1.5g = 1500 mg
   CurieIMU.setDetectionDuration(CURIE_IMU_SHOCK, 50);   // 50ms
   CurieIMU.interrupts(CURIE_IMU_SHOCK);
-
-  Serial.println("IMU initialisation complete, waiting for events...");
 }
 
 void loop() {
@@ -27,3 +25,4 @@ static void eventCallback(void) {
     digitalWrite(LED_BUILTIN, LOW);
   }
 }
+
