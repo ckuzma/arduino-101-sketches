@@ -9,8 +9,8 @@ void setup() {
   CurieIMU.attachInterrupt(eventCallback);
 
   /* Enable Shock Detection */
-  CurieIMU.setDetectionThreshold(CURIE_IMU_SHOCK, 1500); // 1.5g = 1500 mg
-  CurieIMU.setDetectionDuration(CURIE_IMU_SHOCK, 50);   // 50ms
+  CurieIMU.setDetectionThreshold(CURIE_IMU_SHOCK, 1050); // 1.050g = 1050mg
+  CurieIMU.setDetectionDuration(CURIE_IMU_SHOCK, 75);   // 75ms
   CurieIMU.interrupts(CURIE_IMU_SHOCK);
 }
 
