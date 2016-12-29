@@ -5,10 +5,10 @@
 A collection of sketches written specifically for the Arduino 101, taking advantage of the [Intel Curie](http://www.intel.com/content/www/us/en/wearables/wearable-soc.html)'s accelerometers and gyroscopes.
 
 ## Sketches
-### tap-flash-test
+### TapFlashTest
 The first test sketch written specifically for the Arduino 101. When a tap is detected, the onboard LED blinks.
 
-### tap-beat-match
+### TapBeatMatch
 Synchronizes the flashing of lights to the beat of taps. Set the Arduino 101 on a table, wait for it to start its initial blink, then tap the table to a steady tempo for a few seconds. Stop tapping and the built-in LED will continue flashing at the same rate as your taps.
 
 ## Contest Acknowledgement
