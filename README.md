@@ -11,5 +11,8 @@ The first test sketch written specifically for the Arduino 101. When a tap is de
 ### TapBeatMatch
 Synchronizes the flashing of lights to the beat of taps. Set the Arduino 101 on a table, wait for it to start its initial blink, then tap the table to a steady tempo for a few seconds. Stop tapping and the built-in LED will continue flashing at the same rate as your taps.
 
+### SeismicReader
+Makes use of the Curie module's 6-axis motion detection in order to identify seismic activity.
+
 ## Contest Acknowledgement
 I was provided a Arduino 101 development board as part of my participation in the [*Arduino 101 - Invent Your Future!*](https://www.hackster.io/contests/Intel-Arduino-101) contest on [Hackster.io](https://www.hackster.io/). These sketches are being written as part of my project submission.
