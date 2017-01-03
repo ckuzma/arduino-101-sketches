@@ -3,64 +3,25 @@ import os
 import serial
 import sys
 
-class SerialConnection:
-    def __init__(self, port):
-        self.connection = serial.Serial(port, 250000)
-        self.grapher = CurieGrapher()
-
-    def debug_print_json(self, data, debug=False):
-        if debug is True:
-            print(json.dumps(data, indent=2))
-
-    def read_serial(self):
-        ## Get line from Serial
-        data_point = self.connection.readline().decode('utf8')
-
-        cont = False
-        while cont is False:
-        ## Try to decode a JSON from the string
-            try:
-                data_point = json.loads(data_point)
-                cont = True
-            except:
-                print('ERROR: Unable to decode JSON from Serial')
-                print(data_point)
-        return data_point
-
-    def get_curie_loop(self):
-        ## Connect to Serial
-        try:
-            serial_connection = SerialConnection(sys.argv[1])
-        except serial.serialutil.SerialException as e:
-            print('ERROR:')
-            print(e)
-
-        ## Get data off of serial, loops
-        while True:
-            data_point = self.read_serial()
-            self.debug_print_json(data_point)
-            if data_point is not None:
-                self.grapher.graph_live_data(data_point)
-
 class CurieGrapher:
     def build_bar_graph(self, label, value, minimum, maximum):
         return label + '  ' + self.draw_bar(value, minimum, maximum)
 
     def graph_live_data(self, input_data):
-        try:
-            output_string = self.build_bar_graph('ax (' + input_data['ax'] + ')', input_data['ax'], -20000, 20000) + '\n'
-            output_string += self.build_bar_graph('ay', input_data['ay'], -20000, 20000) + '\n'
-            output_string += self.build_bar_graph('az', input_data['az'], -20000, 20000) + '\n'
-            output_string += self.build_bar_graph('gx', input_data['gx'], -20000, 20000) + '\n'
-            output_string += self.build_bar_graph('gy', input_data['gy'], -20000, 20000) + '\n'
-            output_string += self.build_bar_graph('gz', input_data['gz'], -20000, 20000)
+        output_string = self.build_bar_graph('ax (' + str(input_data['ax']) + ')\t', input_data['ax'], -20000, 20000) + '\n'
+        output_string += self.build_bar_graph('ay (' + str(input_data['ay']) + ')\t', input_data['ay'], -20000, 20000) + '\n'
+        output_string += self.build_bar_graph('az (' + str(input_data['az']) + ')\t', input_data['az'], -20000, 20000) + '\n'
+        output_string += self.build_bar_graph('gx (' + str(input_data['gx']) + ')\t', input_data['gx'], -20000, 20000) + '\n'
+        output_string += self.build_bar_graph('gy (' + str(input_data['gy']) + ')\t', input_data['gy'], -20000, 20000) + '\n'
+        output_string += self.build_bar_graph('gz (' + str(input_data['gz']) + ')\t', input_data['gz'], -20000, 20000)
+        if sys.platform == 'win32':
             os.system('cls')
-            print(output_string)
-        except:
-            pass
+        else:
+            os.system('clear')
+        print(output_string)
 
 
-    def draw_bar(self, bar_val, min_limit, max_limit, points=80):
+    def draw_bar(self, bar_val, min_limit, max_limit, points=40):
         """
         bar_val     = value to plot on the line
         min_limit   = minimum value point on the line
@@ -99,5 +60,15 @@ if __name__ == '__main__':
         usage()
         exit()
 
-    serial_connection = SerialConnection(sys.argv[1])
-    serial_connection.get_curie_loop()
+    ## Instantiate our graphing class
+    curie_grapher = CurieGrapher()
+
+    ## Initialize the Serial connection
+    ser = serial.Serial(sys.argv[1], 9600)
+
+    ## Begin the loop
+    while True:
+        raw_serial_data = ser.readline()
+        # print(raw_serial_data) # For debugging
+        sensor_data = json.loads(raw_serial_data)
+        curie_grapher.graph_live_data(sensor_data)

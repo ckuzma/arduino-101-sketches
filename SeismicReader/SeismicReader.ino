@@ -3,13 +3,13 @@ int ax, ay, az;         // accelerometer values
 int gx, gy, gz;         // gyrometer values
 
 void setup(){
-  Serial.begin(250000); // initialize Serial communication
+  Serial.begin(9600); // initialize Serial communication
   CurieIMU.begin();
   delay(5000); // Allow the user to set everything down
   CurieIMU.autoCalibrateGyroOffset();
   CurieIMU.autoCalibrateAccelerometerOffset(X_AXIS, 0);
   CurieIMU.autoCalibrateAccelerometerOffset(Y_AXIS, 0);
-  CurieIMU.autoCalibrateAccelerometerOffset(Z_AXIS, 1);
+  CurieIMU.autoCalibrateAccelerometerOffset(Z_AXIS, 0);
 }
 
 String jsonEncodeValue(String key, float keyVal){
@@ -17,7 +17,7 @@ String jsonEncodeValue(String key, float keyVal){
 }
 
 String assembleJson(String keysAndVals){
-  return "\t{" + keysAndVals + "}";
+  return "{" + keysAndVals + "}";
 }
 
 void loop(){
@@ -31,6 +31,7 @@ void loop(){
   keyVals += jsonEncodeValue("gx", gx) + ",";
   keyVals += jsonEncodeValue("gy", gy) + ",";
   keyVals += jsonEncodeValue("gz", gz);
-  Serial.println(assembleJson(keyVals));
-  delay(500);
+  if(Serial){
+    Serial.println(assembleJson(keyVals));
+  }
 }

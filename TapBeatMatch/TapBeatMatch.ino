@@ -45,7 +45,7 @@ void loop(){
 void blinker(){
   /* Flash */
   digitalWrite(LED_BUILTIN, HIGH);
-  pause(50);
+  pause(50); // Flash duration
   digitalWrite(LED_BUILTIN, LOW);
 
   /* Delay/Pause */
