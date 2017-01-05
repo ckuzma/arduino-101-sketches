@@ -1,7 +1,9 @@
+import csv
 import json
 import os
 import serial
 import sys
+import time
 
 MAX = {
     'ax': 0,
@@ -44,7 +46,8 @@ class CurieGrapher:
         output_string += 'az\tMAX = ' + str(MAX['az']) + '\tMIN = ' + str(MIN['az']) + '\n'
         output_string += 'gx\tMAX = ' + str(MAX['gx']) + '\tMIN = ' + str(MIN['gx']) + '\n'
         output_string += 'gy\tMAX = ' + str(MAX['gy']) + '\tMIN = ' + str(MIN['gy']) + '\n'
-        output_string += 'gz\tMAX = ' + str(MAX['gz']) + '\tMIN = ' + str(MIN['gz'])
+        output_string += 'gz\tMAX = ' + str(MAX['gz']) + '\tMIN = ' + str(MIN['gz']) + '\n'
+        output_string += '\n\tPress CTRL + C to quit\n\n'
         if sys.platform == 'win32':
             os.system('cls')
         else:
@@ -78,21 +81,45 @@ class CurieGrapher:
         bar_string += '|' + label_max
         return bar_string
 
+class CsvWriter:
+    def __init__(self):
+        self.start_time = int(time.time())
+        self.file = None
 
+    def open(self, filename):
+        self.file = open(filename, 'w')
+        self.write('time in seconds,ax,ay,az,gx,gy,gz')
+
+    def write(self, string_to_write):
+        self.file.write(string_to_write + '\n')
+
+    def convert_and_write(self, curie_data):
+        csv_row = [str(int(time.time()) - self.start_time)]
+        csv_row.append(str(curie_data['ax']))
+        csv_row.append(str(curie_data['ay']))
+        csv_row.append(str(curie_data['az']))
+        csv_row.append(str(curie_data['gx']))
+        csv_row.append(str(curie_data['gy']))
+        csv_row.append(str(curie_data['gz']))
+        csv_row = ','.join(csv_row)
+        self.write(csv_row)
 
 
 if __name__ == '__main__':
     def usage():
         print('\n\tUsage:')
-        print('\tpython ' + sys.argv[0] + ' ARG1')
+        print('\tpython ' + sys.argv[0] + ' ARG1 ARG2')
         print('\n\tARG1 = port to connect to')
+        print('\tARG2 = filepath for data log csv\n')
 
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 3:
         usage()
         exit()
 
-    ## Instantiate our graphing class
+    ## Instantiate our classes
     curie_grapher = CurieGrapher()
+    csv_writer = CsvWriter()
+    csv_writer.open(sys.argv[2])
 
     ## Initialize the Serial connection
     ser = serial.Serial(sys.argv[1], 9600)
@@ -100,6 +127,6 @@ if __name__ == '__main__':
     ## Begin the loop
     while True:
         raw_serial_data = ser.readline()
-        # print(raw_serial_data) # For debugging
         sensor_data = json.loads(raw_serial_data)
+        csv_writer.convert_and_write(sensor_data)
         curie_grapher.graph_live_data(sensor_data)
