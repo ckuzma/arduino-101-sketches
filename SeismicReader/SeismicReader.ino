@@ -34,4 +34,5 @@ void loop(){
   if(Serial){
     Serial.println(assembleJson(keyVals));
   }
+  delay(100);
 }
