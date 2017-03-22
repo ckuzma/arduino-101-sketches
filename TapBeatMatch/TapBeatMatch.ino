@@ -15,6 +15,7 @@ long tapStart;
 long tapEnd;
 long recentTaps[tapsToRemember];
 int currentTap = 0;
+int lightTimer = 0;
 
 void setup(){
   /* Start serial for debugging */
@@ -43,18 +44,15 @@ void loop(){
 }
 
 void blinker(){
-  /* Flash */
-  digitalWrite(LED_BUILTIN, HIGH);
-  pause(50); // Flash duration
   digitalWrite(LED_BUILTIN, LOW);
-
-  /* Delay/Pause */
-  pause(delayTime);
-}
-
-void pause(long pauseTime){
-  unsigned long pauseStart = millis();
-  while (millis() < pauseStart + pauseTime);
+  if(lightTimer == 0) {
+    lightTimer = millis();
+  }
+  if(millis() - lightTimer >= delayTime) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(50);
+    lightTimer = 0;
+  }
 }
 
 void calculateDelay(long newDelay){
