@@ -81,11 +81,6 @@ void calculateDelay(long newDelay){
 
 static void eventCallback(void){
   if (CurieIMU.getInterruptStatus(CURIE_IMU_SHOCK)) {
-    /* Flash the LED */
-    digitalWrite(LED_BUILTIN, HIGH);
-    pause(50);
-    digitalWrite(LED_BUILTIN, LOW);
-
     /* Measure the tap length */
     if (inTap == false){
       Serial.print("Tap start...");
