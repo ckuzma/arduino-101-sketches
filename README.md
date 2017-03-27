@@ -21,4 +21,4 @@ Makes use of the Curie module's 6-axis motion detection in order to identify sei
 Originally designed to detect approaching footsteps and turn on power when someone is nearby, this was changed to detect double-taps instead because of a poor signal-to-noise ratio.
 
 ## Contest Acknowledgement
-I was provided a Arduino 101 development board as part of my participation in the [*Arduino 101 - Invent Your Future!*](https://www.hackster.io/contests/Intel-Arduino-101) contest on [Hackster.io](https://www.hackster.io/). These sketches are being written as part of my project submission.
+I was provided a Arduino 101 development board as part of [my project submission](https://www.hackster.io/kuzma/motion-sensitive-circuit-control-via-intel-curie-b6db0a) for the [*Arduino 101 - Invent Your Future!*](https://www.hackster.io/contests/Intel-Arduino-101) contest on [Hackster.io](https://www.hackster.io/). These sketches are being written as part of my project submission.
