@@ -7,14 +7,14 @@ bool doubleTap = true;
 bool inTap = false;
 bool turnedOn = false;
 int tapStart = 0;
-int tapMax = 2000; // Maximum time between taps
-int tapMin = 300; // Minimum time between taps
+int tapMax = 1000; // Maximum time between taps
+int tapMin = 400; // Minimum time between taps
 
 void setup() {
   /* USB serial debugging */
   Serial.begin(115200);
   
-  /* Set up the built-in LED */
+  /* Set up the LED strip */
   pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
   pinMode(4, OUTPUT);
@@ -30,7 +30,7 @@ void setup() {
   /* Shock detection parameters */
   if(doubleTap) {
     CurieIMU.setDetectionThreshold(CURIE_IMU_SHOCK, 1015);
-    CurieIMU.setDetectionDuration(CURIE_IMU_SHOCK, 100);
+    CurieIMU.setDetectionDuration(CURIE_IMU_SHOCK, 50);
     CurieIMU.interrupts(CURIE_IMU_SHOCK);
   }
   else {
@@ -42,7 +42,7 @@ void setup() {
 void loop() {
   // Code to clear out in-tap state
   if(inTap && millis() - tapStart > tapMax) {
-    Serial.println("inTap = false");
+    Serial.print("time out cancelled.\n");
     inTap = false;
   }
 }
@@ -64,26 +64,29 @@ void lightsOff() {
 
 static void eventCallback(void) {
   if (CurieIMU.getInterruptStatus(CURIE_IMU_SHOCK)) {
-    Serial.println("CurieIMU.getInterruptStatus(CURIE_IMU_SHOCK)");
-    lightsOn();
-    delay(10);
-    lightsOff();
     if(doubleTap) {
       if(!inTap) {
-        Serial.println("!inTap");
+        Serial.print("1st tap...");
         inTap = true;
         tapStart = millis();
       }
       if(inTap && millis() - tapStart >= tapMin) {
-        Serial.println("inTap && millis() - tapStart >= tapMin");
+        Serial.print("and 2nd!\n");
         if(!turnedOn) {
-          turnedOn = true;
+          Serial.println("Lights on.");
           lightsOn();
+          turnedOn = true;
+          inTap = false;
         }
         else {
-          turnedOn = false;
+          Serial.println("Lights off.");
           lightsOff();
+          turnedOn = false;
+          inTap = false;
         }
+      }
+      else {
+        Serial.print("-too fast-");
       }
     }
     else {
