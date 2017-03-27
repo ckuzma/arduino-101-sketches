@@ -21,7 +21,15 @@ Makes use of the Curie module's 6-axis motion detection in order to identify sei
 ### [VibrationLighting](https://github.com/ckuzma/arduino-101-sketches/blob/master/sketches/VibrationLighting/VibrationLighting.ino)
 ![Double-tap Arduino 101 video.](https://github.com/ckuzma/arduino-101-sketches/blob/master/photos/double-tap.gif)
 
-Originally designed to detect approaching footsteps and turn on power when someone is nearby, this was changed to detect double-taps instead because of a poor signal-to-noise ratio.
+Originally designed to detect approaching footsteps and turn on power when someone is nearby, this was changed to detect double-taps instead because of a poor signal-to-noise ratio. The code is written to turn on an RGB LED strip mounted underneath an entryway mirror.
+
+![Mirror lighting.](https://github.com/ckuzma/arduino-101-sketches/blob/master/photos/underlight.jpg)
+
+## Bonus Sketch
+### [ExternalGyroscope](https://github.com/ckuzma/arduino-101-sketches/blob/master/sketches/ExternalGyroscope/ExternalGyroscope.ino)
+![Fritzing diagram of ExternalGyroscope](https://github.com/ckuzma/arduino-101-sketches/blob/master/photos/fritzing-ext.png)
+
+A conversation with another user on Hackster prompted me to rewrite the SeismicReader sketch to use an external gyroscope so that other users could visualize and record motion data without necessitating the purchase of an Arduino 101. The thought being that the more users there are who can record seismic data, the better in terms of building a worldwide network for researchers to tap into.
 
 ## Contest Acknowledgement
 I was provided a Arduino 101 development board as part of [my project submission](https://www.hackster.io/kuzma/motion-sensitive-circuit-control-via-intel-curie-b6db0a) for the [*Arduino 101 - Invent Your Future!*](https://www.hackster.io/contests/Intel-Arduino-101) contest on [Hackster.io](https://www.hackster.io/). These sketches are being written as part of my project submission.
